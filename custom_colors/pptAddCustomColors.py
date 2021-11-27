@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import argparse, os, shutil
-from xml.etree.ElementTree import Element, SubElement
 import xml.etree.cElementTree as ET
 from re import match
+from pathlib import Path
 
 # params
 
@@ -14,6 +14,7 @@ parser = argparse.ArgumentParser(
     Value -v is a hex code of a color e.g. 20f00f
     Name -n is a color name which is displayed in PPT e.g. Blue
     Number of values and names must be equal, min 1, max 50
+    File name has to be 'todo.pptx' located in the Desktop
     """
     )
 
@@ -34,13 +35,18 @@ if not filtered_values or len(filtered_values) != len(args["name"]) or len(filte
 
 # xml modification
 
-main_path = '/home/alona/ProcessAutomation/testfolder/'
-end_path = '/home/alona/ProcessAutomation/testfolder/new/'
-xml_file = '/home/alona/ProcessAutomation/testfolder/new/ppt/theme/theme1.xml'
+main_path = Path.home() / Path('Desktop')
+end_path = main_path / Path('CustomColors')
+todo_pptx = main_path / Path('todo.pptx')
+todo_zip = main_path / Path('todo.zip')
+custom_pptx = main_path / Path('customcolors.pptx')
+custom_zip = main_path / Path('customcolors.zip')
+custom = main_path / Path('customcolors')
+xml_file = end_path / Path('ppt', 'theme', 'theme1.xml')
 tag_color_list = '{http://schemas.openxmlformats.org/drawingml/2006/main}custClrLst'
 
-os.rename(f'{main_path}template.pptx', f'{main_path}template.zip')
-shutil.unpack_archive(f'{main_path}template.zip', end_path, 'zip')
+os.rename(todo_pptx, todo_zip)
+shutil.unpack_archive(todo_zip, end_path, 'zip')
 
 def register_all_namespaces(filename):
     namespaces = dict([node for _, node in ET.iterparse(filename, events=['start-ns'])])
@@ -49,24 +55,12 @@ def register_all_namespaces(filename):
 
 register_all_namespaces(xml_file)
 
-# def remove_namespace(doc, namespace):
-#     ns = u'{%s}' % namespace
-#     nsl = len(ns)
-#     for elem in tree.iter(doc):
-#         if elem.tag.startswith(ns):
-#             elem.tag = elem.tag[nsl:]
-
 tree = ET.parse(xml_file)
 root = tree.getroot()
 
-# remove_namespace(root, u'http://schemas.microsoft.com/office/thememl/2012/main')
-
-# result = []
 for elem in root:
     if elem.tag == tag_color_list:
         elem.clear()
-        # for subelem in elem:
-        #     result.append(elem)
 
 if root.find(tag_color_list) is None:
     color_main_element = ET.Element(tag_color_list)
@@ -84,7 +78,7 @@ tree.write(xml_file,
             encoding='utf-8',
             method='xml')
 
-shutil.make_archive(f'{main_path}zrobiony', 'zip', end_path)
-os.rename(f'{main_path}zrobiony.zip', f'{main_path}zrobiony.pptx')
+shutil.make_archive(custom, 'zip', end_path)
+os.rename(custom_zip, custom_pptx)
 
 print('Tadam!')
