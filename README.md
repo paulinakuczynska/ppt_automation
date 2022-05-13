@@ -1,1 +1,21 @@
-# ppt_automation
+# PowerPoint automation
+Python scripts run from the command line for automating tasks related to PowerPoint
+## Table of contents
+* [General info](#general-info)
+* [Technologies](#technologies)
+* [Setup](#setup)
+* [References](#references)
+## General info
+These scripts enable efficient modification of xml code in .pptx files. Due to not all PowerPoint options are available from the GUI level, adjusting presentation templates to your needs often requires the preparation of custom xml parts. These tasks tend to be time-consuming and monotonous, so their automation is important for people who design presentation templates.
+### Custom colors
+PowerPoint allows to set only 10 colors constituting the main palette named Theme Colors. By adding a custom xml part, the palette can be increased by another 51 colors. The script allows to set the values and names of the colors.
+### Custom margins
+By default, PowerPoint sets frames around text inside placeholders, which makes it difficult to align text and graphics elements. Although it is possible to change the margins manually, it is necessary to do this on each placeholder separately. Additionally, copying placeholders to the slide restores the default value. Changing the default value is possible by modifying the xml code. The script allows to set any value of the left, right, bottom and top margins, and the change will be applied to all layout files.
+## Technologies
+* Python 3.8.10
+* The Python Standard Library only
+## Setup
+## References
+* [OOXML Hacking](https://www.brandwares.com/bestpractices/category/xml-hacks/) by John Korchok
+* Al Sweigart. Automate the Boring Stuff with Python, 2nd Edition: Practical Programming for Total Beginners, 2021.
+* Preserve namespaces when parsing xml in [Stack Overflow](https://stackoverflow.com/questions/54439309/how-to-preserve-namespaces-when-parsing-xml-via-elementtree-in-python)
