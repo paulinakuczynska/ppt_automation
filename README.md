@@ -1,4 +1,4 @@
-# PowerPoint automation
+# XML customization for PowerPoint
 Python scripts run from the command line for automating tasks related to PowerPoint
 ## Table of contents
 * [General info](#general-info)
